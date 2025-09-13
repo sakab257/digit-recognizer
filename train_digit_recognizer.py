@@ -8,21 +8,18 @@ from keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
 from keras import backend as K
 import matplotlib.pyplot as plt
 
-# Chargement des données
+# Chargement et préparation des données MNIST
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 print(f"Données initiales: {x_train.shape}, {y_train.shape}")
 
-# Reshape et normalisation
 x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
 x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
 input_shape = (28, 28, 1)
 
-# Conversion en float32 et normalisation
 x_train = x_train.astype('float32') / 255.0
 x_test = x_test.astype('float32') / 255.0
 
-# One-hot encoding des labels
 y_train = keras.utils.to_categorical(y_train, 10)
 y_test = keras.utils.to_categorical(y_test, 10)
 
@@ -30,14 +27,13 @@ print(f'x_train shape: {x_train.shape}')
 print(f'{x_train.shape[0]} échantillons d\'entraînement')
 print(f'{x_test.shape[0]} échantillons de test')
 
-# Hyperparamètres améliorés
-batch_size = 128  # Augmenté pour plus de stabilité
+batch_size = 128
 num_classes = 10
-epochs = 50  # Plus d'epochs avec early stopping
+epochs = 50
 
-# Architecture améliorée du modèle
+# Architecture CNN avec couches convolutionnelles et denses
 model = Sequential([
-    # Premier bloc convolutionnel
+    # Première couche convolutionnelle
     Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape),
     BatchNormalization(),
     Conv2D(32, kernel_size=(3, 3), activation='relu'),
@@ -45,7 +41,7 @@ model = Sequential([
     MaxPooling2D(pool_size=(2, 2)),
     Dropout(0.25),
     
-    # Deuxième bloc convolutionnel
+    # Deuxième couche convolutionnelle
     Conv2D(64, kernel_size=(3, 3), activation='relu'),
     BatchNormalization(),
     Conv2D(64, kernel_size=(3, 3), activation='relu'),
@@ -53,7 +49,7 @@ model = Sequential([
     MaxPooling2D(pool_size=(2, 2)),
     Dropout(0.25),
     
-    # Couches denses
+    # Couches de classification
     Flatten(),
     Dense(256, activation='relu'),
     BatchNormalization(),
@@ -64,17 +60,15 @@ model = Sequential([
     Dense(num_classes, activation='softmax')
 ])
 
-# Compilation avec Adam (généralement meilleur qu'Adadelta)
 model.compile(
     loss='categorical_crossentropy',
     optimizer=keras.optimizers.Adam(learning_rate=0.001),
     metrics=['accuracy']
 )
 
-# Affichage du résumé du modèle
 model.summary()
 
-# Augmentation de données pour améliorer la généralisation
+# Augmentation de données pour éviter le surapprentissage
 datagen = ImageDataGenerator(
     rotation_range=10,
     width_shift_range=0.1,
@@ -83,7 +77,7 @@ datagen = ImageDataGenerator(
     shear_range=0.1
 )
 
-# Callbacks pour un meilleur entraînement
+# Callbacks pour optimiser l'entraînement
 callbacks = [
     EarlyStopping(
         monitor='val_accuracy',
@@ -106,7 +100,7 @@ callbacks = [
     )
 ]
 
-# Entraînement avec augmentation de données
+# Entraînement du modèle avec augmentation de données
 history = model.fit(
     datagen.flow(x_train, y_train, batch_size=batch_size),
     steps_per_epoch=len(x_train) // batch_size,
@@ -118,16 +112,14 @@ history = model.fit(
 
 print("\nModèle entraîné avec succès!")
 
-# Évaluation finale
 score = model.evaluate(x_test, y_test, verbose=0)
 print(f'Test loss: {score[0]:.4f}')
 print(f'Test accuracy: {score[1]:.4f}')
 
-# Sauvegarde du modèle final
 model.save('mnist_improved.h5')
 print("Modèle sauvegardé sous 'mnist_improved.h5'")
 
-# Optionnel : Visualisation de l'historique d'entraînement
+# Visualisation des métriques d'entraînement
 plt.figure(figsize=(12, 4))
 
 plt.subplot(1, 2, 1)
