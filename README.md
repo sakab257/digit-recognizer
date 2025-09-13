@@ -1,36 +1,36 @@
-# Reconnaissance de Chiffres Manuscrits 🔢
+# Reconnaissance de Chiffres Manuscrits IA
 
-Un projet de reconnaissance de chiffres manuscrits utilisant un réseau de neurones convolutionnel (CNN) et une interface graphique intuitive développée en Python.
+Un projet de reconnaissance de chiffres manuscrits utilisant un réseau de neurones convolutionnel (CNN) avec une interface graphique moderne et intuitive développée en Python.
 
-## 📋 Description
+## Description
 
-Ce projet permet de dessiner des chiffres à la main sur une interface graphique et d'obtenir une prédiction en temps réel grâce à un modèle de deep learning entraîné sur le dataset MNIST. Le système affiche non seulement la prédiction principale mais aussi le niveau de confiance et les alternatives possibles.
+Ce projet permet de dessiner des chiffres à la main sur une interface graphique épurée et d'obtenir une prédiction en temps réel grâce à un modèle de deep learning entraîné sur le dataset MNIST. Le système affiche la prédiction principale, le niveau de confiance et les alternatives possibles dans une interface moderne et professionnelle.
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
-- **Interface graphique intuitive** : Canvas de dessin avec pinceau adaptatif
+- **Interface graphique moderne** : Design épuré avec canvas de dessin haute résolution
 - **Prédiction en temps réel** : Classification instantanée des chiffres dessinés
-- **Analyse de confiance** : Affichage du niveau de certitude de la prédiction
+- **Analyse de confiance** : Affichage du niveau de certitude avec indicateurs visuels
 - **Alternatives proposées** : Top 3 des prédictions possibles avec leurs probabilités
-- **Prétraitement automatique** : Normalisation et redimensionnement automatiques
-- **Indicateurs visuels** : Code couleur selon le niveau de confiance
+- **Prétraitement automatique** : Normalisation et redimensionnement intelligents
+- **Design responsive** : Interface adaptée et centrée pour une meilleure expérience
 
-## 🛠️ Technologies Utilisées
+## Technologies Utilisées
 
 - **Python 3.7+**
 - **TensorFlow/Keras** : Pour l'entraînement et l'inférence du modèle
-- **Tkinter** : Interface graphique native
-- **OpenCV** : Traitement d'image
-- **NumPy** : Calculs numériques
+- **Tkinter** : Interface graphique native avec design moderne
+- **OpenCV** : Traitement d'image avancé
+- **NumPy** : Calculs numériques optimisés
 - **PIL/Pillow** : Manipulation d'images
 - **Matplotlib** : Visualisation des métriques d'entraînement
 
-## 📦 Installation
+## Installation
 
 ### Prérequis
 
 ```bash
-pip install tensorflow keras opencv-python pillow numpy matplotlib pywin32
+pip install tensorflow keras opencv-python pillow numpy matplotlib
 ```
 
 ### Installation rapide
@@ -38,9 +38,9 @@ pip install tensorflow keras opencv-python pillow numpy matplotlib pywin32
 1. Clonez ou téléchargez le projet
 2. Installez les dépendances :
 ```bash
-pip install -r requirements.txt
+pip install tensorflow keras opencv-python pillow numpy matplotlib
 ```
-3. Lancez l'entraînement du modèle (optionnel si vous n'avez pas le modèle pré-entraîné) :
+3. Lancez l'entraînement du modèle (si nécessaire) :
 ```bash
 python train_digit_recognizer.py
 ```
@@ -49,7 +49,23 @@ python train_digit_recognizer.py
 python gui_digit_recognizer.py
 ```
 
-## 🚀 Utilisation
+## Utilisation
+
+### Interface Graphique
+
+```bash
+python gui_digit_recognizer.py
+```
+
+**Guide d'utilisation de l'interface moderne :**
+
+1. **Dessinez** un chiffre (0-9) sur le canvas blanc avec votre souris
+2. **Cliquez** sur le bouton "Analyser" pour obtenir la classification
+3. **Observez** les résultats dans le panneau centralisé :
+   - Prédiction principale avec code couleur dynamique
+   - Niveau de confiance en pourcentage avec indicateur visuel
+   - Top 2 des alternatives possibles
+4. **Cliquez** sur "Effacer" pour nettoyer le canvas et recommencer
 
 ### Entraînement du Modèle
 
@@ -64,36 +80,40 @@ Le script d'entraînement :
 - Sauvegarde le meilleur modèle sous `mnist_improved.h5`
 - Génère des graphiques de performance (`training_history.png`)
 
-### Interface Graphique
-
-```bash
-python gui_digit_recognizer.py
-```
-
-**Comment utiliser l'interface :**
-
-1. **Dessinez** un chiffre (0-9) sur le canvas blanc avec votre souris
-2. **Cliquez** sur "Prédire" pour obtenir la classification
-3. **Observez** les résultats :
-   - Prédiction principale avec code couleur
-   - Niveau de confiance en pourcentage
-   - Top 2 des alternatives possibles
-4. **Cliquez** sur "Effacer" pour recommencer
-
-## 🏗️ Architecture du Projet
+## Architecture du Projet
 
 ```
-projet/
+digit-recognizer/
 │
 ├── train_digit_recognizer.py    # Script d'entraînement du modèle
-├── gui_digit_recognizer.py      # Interface graphique principale
+├── gui_digit_recognizer.py      # Interface graphique moderne
 ├── mnist_improved.h5            # Modèle entraîné (généré)
 ├── training_history.png         # Graphiques de performance (généré)
-├── requirements.txt             # Dépendances Python
 └── README.md                   # Documentation
 ```
 
-## 🧠 Architecture du Modèle
+## Interface Utilisateur
+
+### Design Moderne
+
+L'interface a été entièrement repensée avec :
+
+- **Thème clair professionnel** : Palette de couleurs moderne (#f8f9fa, #007acc)
+- **Typographie Segoe UI** : Police moderne et lisible
+- **Canvas haute résolution** : 340x340 pixels avec bordure élégante
+- **Boutons stylisés** : Design flat avec effets hover
+- **Panneau de résultats centré** : Affichage organisé et lisible
+- **Indicateurs visuels** : Couleurs adaptatives selon la confiance
+
+### Expérience Utilisateur
+
+- Canvas avec curseur précis et highlight au focus
+- Boutons avec feedback visuel et curseur interactif
+- Textes centrés et hiérarchisés pour une lecture optimale
+- Instructions claires et discrètes
+- Design responsive et professionnel
+
+## Architecture du Modèle
 
 Le modèle utilise une architecture CNN optimisée :
 
@@ -118,7 +138,7 @@ Dense(10, softmax) → Prédiction finale
 - **Early Stopping** : Évite le surentraînement
 - **Learning Rate Scheduling** : Optimise la convergence
 
-## 📊 Performances
+## Performances
 
 - **Précision sur le test MNIST** : ~99.5%
 - **Temps d'inférence** : <100ms par prédiction
@@ -129,20 +149,22 @@ Le modèle a été spécialement optimisé pour bien fonctionner avec des dessin
 - Gestion des ratio d'aspect variables
 - Normalisation automatique des intensités
 
-## 🔧 Fonctionnalités Techniques
+## Fonctionnalités Techniques
 
 ### Prétraitement Intelligent
+- **Capture directe du canvas** : Sans dépendance à Ghostscript
 - **Inversion automatique** : Conversion blanc sur noir (format MNIST)
 - **Détection des contours** : Isolation automatique du chiffre dessiné
 - **Centrage adaptatif** : Positionnement optimal dans l'image 28x28
 - **Préservation du ratio** : Évite la déformation des chiffres
 
-### Interface Utilisateur
-- **Dessin fluide** : Lignes continues avec lissage
-- **Feedback visuel** : Codes couleur selon la confiance
-- **Conseils intégrés** : Instructions d'utilisation dans l'interface
+### Interface Moderne
+- **Design épuré** : Interface professionnelle sans éléments superflus
+- **Feedback visuel avancé** : Codes couleur et indicateurs de confiance
+- **Responsive design** : Centrage automatique et adaptation de l'affichage
+- **Accessibilité** : Couleurs contrastées et typographie lisible
 
-## 🎯 Conseils d'Utilisation
+## Conseils d'Utilisation
 
 Pour obtenir les meilleures prédictions :
 
@@ -152,7 +174,7 @@ Pour obtenir les meilleures prédictions :
 4. **Évitez les traits parasites** dans les coins
 5. **Respectez les formes standards** des chiffres
 
-## 🐛 Résolution de Problèmes
+## Résolution de Problèmes
 
 **Le modèle n'est pas trouvé :**
 ```
@@ -162,7 +184,7 @@ Solution: Lancez d'abord train_digit_recognizer.py pour créer le modèle
 **Erreur d'importation :**
 ```
 Solution: Vérifiez que toutes les dépendances sont installées
-pip install -r requirements.txt
+pip install tensorflow keras opencv-python pillow numpy matplotlib
 ```
 
 **Prédictions incorrectes :**
@@ -170,16 +192,17 @@ pip install -r requirements.txt
 Solution: Assurez-vous de dessiner clairement au centre du canvas
 ```
 
-## 📈 Améliorations Futures
+## Améliorations Futures
 
 - [ ] Support de plusieurs chiffres simultanés
 - [ ] Reconnaissance de lettres
 - [ ] Sauvegarde des dessins
 - [ ] Mode d'entraînement en ligne
 - [ ] Export du modèle vers d'autres formats (ONNX, TensorFlow Lite)
-- [ ] Interface web avec Flask/Django
+- [ ] Interface web responsive
+- [ ] Mode sombre/clair
 
-## 🤝 Contribution
+## Contribution
 
 Les contributions sont les bienvenues ! N'hésitez pas à :
 
@@ -189,11 +212,11 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
 4. Pusher vers la branche
 5. Ouvrir une Pull Request
 
-## 📄 Licence
+## Licence
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+Ce projet est sous licence MIT.
 
-## 🙏 Remerciements
+## Remerciements
 
 - Dataset MNIST pour l'entraînement
 - Communauté TensorFlow/Keras pour les outils
@@ -201,4 +224,4 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 ---
 
-**Développé avec ❤️ en Python**
+**Développé avec passion en Python**

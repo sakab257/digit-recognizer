@@ -1,8 +1,7 @@
 from keras.models import load_model
 from tkinter import *
 import tkinter as tk
-import win32gui
-from PIL import ImageGrab, Image, ImageOps
+from PIL import Image, ImageOps, ImageDraw
 import numpy as np
 import cv2
 
@@ -91,46 +90,78 @@ class App(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         
-        self.title("Reconnaissance de chiffres manuscrits")
+        self.title("Reconnaissance de Chiffres IA")
         self.resizable(False, False)
+        self.configure(bg="#f8f9fa")
         
         # Variables pour le dessin
         self.old_x = None
         self.old_y = None
-        self.line_width = 15
+        self.line_width = 18
         
-        # Création des éléments
-        self.canvas = tk.Canvas(self, width=300, height=300, bg="white", cursor="cross")
-        self.label = tk.Label(self, text="Dessinez un chiffre...", font=("Helvetica", 24))
-        self.confidence_label = tk.Label(self, text="", font=("Helvetica", 12))
-        self.alternatives_label = tk.Label(self, text="", font=("Helvetica", 10), fg="gray")
+        # Frame principal avec padding
+        main_frame = tk.Frame(self, bg="#f8f9fa", padx=30, pady=25)
+        main_frame.grid(row=0, column=0)
         
-        # Boutons
-        button_frame = tk.Frame(self)
-        self.classify_btn = tk.Button(button_frame, text="Prédire", 
+        # Titre principal
+        title_label = tk.Label(main_frame, text="Reconnaissance de Chiffres", 
+                              font=("Segoe UI", 24, "bold"), fg="#2c3e50", bg="#f8f9fa")
+        title_label.grid(row=0, column=0, columnspan=2, pady=(0, 20))
+        
+        # Canvas avec bordure moderne
+        canvas_frame = tk.Frame(main_frame, bg="#ffffff", relief="solid", bd=1)
+        canvas_frame.grid(row=1, column=0, columnspan=2, pady=(0, 20))
+        
+        self.canvas = tk.Canvas(canvas_frame, width=340, height=340, bg="#ffffff", 
+                               cursor="crosshair", highlightthickness=2, highlightcolor="#007acc", bd=0)
+        self.canvas.grid(row=0, column=0, padx=8, pady=8)
+        
+        # Zone des résultats avec style card moderne
+        results_frame = tk.Frame(main_frame, bg="#ffffff", relief="solid", bd=1, padx=20, pady=18)
+        results_frame.grid(row=2, column=0, columnspan=2, sticky="ew", pady=(0, 20))
+        results_frame.grid_columnconfigure(0, weight=1)
+        
+        self.label = tk.Label(results_frame, text="Dessinez un chiffre de 0 à 9", 
+                             font=("Segoe UI", 16, "normal"), fg="#6c757d", bg="#ffffff")
+        self.label.grid(row=0, column=0, pady=(0, 10))
+        
+        self.confidence_label = tk.Label(results_frame, text="", 
+                                        font=("Segoe UI", 14), fg="#495057", bg="#ffffff")
+        self.confidence_label.grid(row=1, column=0, pady=3)
+        
+        self.alternatives_label = tk.Label(results_frame, text="", 
+                                          font=("Segoe UI", 12), fg="#6c757d", bg="#ffffff")
+        self.alternatives_label.grid(row=2, column=0, pady=3)
+        
+        # Boutons avec style moderne
+        button_frame = tk.Frame(main_frame, bg="#f8f9fa")
+        button_frame.grid(row=3, column=0, columnspan=2, pady=(0, 20))
+        
+        self.classify_btn = tk.Button(button_frame, text="Analyser", 
                                      command=self.classify_handwriting,
-                                     bg="#4CAF50", fg="white", font=("Helvetica", 12))
+                                     bg="#007acc", fg="green", font=("Segoe UI", 13, "bold"),
+                                     relief="flat", bd=0, padx=30, pady=12,
+                                     cursor="hand2",
+                                     highlightthickness=0)
+        self.classify_btn.pack(side=LEFT, padx=(0, 15))
+        
         self.button_clear = tk.Button(button_frame, text="Effacer", 
                                      command=self.clear_all,
-                                     bg="#f44336", fg="white", font=("Helvetica", 12))
-        
-        # Disposition
-        self.canvas.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
-        self.label.grid(row=1, column=0, columnspan=2, pady=5)
-        self.confidence_label.grid(row=2, column=0, columnspan=2, pady=2)
-        self.alternatives_label.grid(row=3, column=0, columnspan=2, pady=2)
-        button_frame.grid(row=4, column=0, columnspan=2, pady=10)
-        self.classify_btn.pack(side=LEFT, padx=5)
-        self.button_clear.pack(side=LEFT, padx=5)
+                                     bg="#6c757d", fg="red", font=("Segoe UI", 13, "bold"),
+                                     relief="flat", bd=0, padx=30, pady=12,
+                                     cursor="hand2",
+                                     highlightthickness=0)
+        self.button_clear.pack(side=LEFT)
         
         # Bindings pour le dessin
         self.canvas.bind("<B1-Motion>", self.paint)
         self.canvas.bind("<ButtonRelease-1>", self.reset)
         
-        # Instructions
-        instructions = tk.Label(self, text="Astuce: Dessinez le chiffre au centre et assez grand", 
-                               font=("Helvetica", 9), fg="gray")
-        instructions.grid(row=5, column=0, columnspan=2, pady=5)
+        # Instructions avec style amélioré
+        instructions = tk.Label(main_frame, text="Conseil: Dessinez le chiffre bien centré et assez grand pour une meilleure précision", 
+                               font=("Segoe UI", 11), fg="#6c757d", bg="#f8f9fa",
+                               wraplength=450, justify="center")
+        instructions.grid(row=4, column=0, columnspan=2)
 
     def paint(self, event):
         """Dessiner avec des lignes continues pour un meilleur rendu"""
@@ -149,32 +180,34 @@ class App(tk.Tk):
     def clear_all(self):
         """Effacer le canvas et réinitialiser les labels"""
         self.canvas.delete("all")
-        self.label.configure(text="Dessinez un chiffre...")
+        self.label.configure(text="Dessinez un chiffre de 0 à 9")
         self.confidence_label.configure(text="")
         self.alternatives_label.configure(text="")
         
     def classify_handwriting(self):
         """Classification avec affichage amélioré des résultats"""
-        # Capture de l'image du canvas
-        HWND = self.canvas.winfo_id()
-        rect = win32gui.GetWindowRect(HWND)
-        x, y, x2, y2 = rect
+        # Créer une image directement à partir du canvas sans PostScript
+        im = Image.new('RGB', (300, 300), 'white')
+        draw = ImageDraw.Draw(im)
         
-        # Ajustement pour éviter les bordures
-        im = ImageGrab.grab((x+2, y+2, x2-2, y2-2))
+        # Récupérer tous les éléments du canvas et les redessiner sur l'image PIL
+        for item in self.canvas.find_all():
+            coords = self.canvas.coords(item)
+            if len(coords) >= 4:  # Ligne
+                draw.line(coords, fill='black', width=self.line_width)
         
         # Prédiction
         digit, confidence, top_3 = predict_digit(im)
         
         # Affichage du résultat principal
         if confidence > 0.8:
-            conf_color = "green"
+            conf_color = "#28a745"
             conf_text = "Très confiant"
         elif confidence > 0.5:
-            conf_color = "orange"
+            conf_color = "#ffc107"
             conf_text = "Moyennement confiant"
         else:
-            conf_color = "red"
+            conf_color = "#dc3545"
             conf_text = "Peu confiant"
         
         self.label.configure(text=f"Prédiction: {digit}", fg=conf_color)
