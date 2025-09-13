@@ -68,7 +68,7 @@ class App(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         
-        self.title("Reconnaissance de Chiffres IA")
+        self.title("IntelliDraw - Reconnaissance de Chiffres Manuscrits")
         self.resizable(False, False)
         self.configure(bg="#f8f9fa")
         
